@@ -20,4 +20,4 @@ Slide and combine tiles using the arrow keys `↑` `↓` `←` `→`.
 
 Typing `q` twice will quit out of current run.
 
-Thanks for playing!
+Good luck and have fun!
