@@ -4,7 +4,6 @@
 #include <conio.h>
 #include <iomanip>
 #include <cstring>
-#include <cctype>
 
 #define KEY_UP 72
 #define KEY_DOWN 80
@@ -39,9 +38,6 @@ int main(){
 
         std::cout << "Enter input: ";
         std::cin >> input;
-
-        std::cout << input << std::endl;
-
     }while(processInput(input));
 
     return 0;
@@ -68,8 +64,7 @@ bool processInput(std::string input){
         displayArray(array);
 
         std::cout << "Use the arrow keys to move the tiles in the direction of the arrow.\n";
-
-        std::cout << "Enter any input to continue.\n";
+        std::cout << "Enter any input to continue.";
         getch();
 
         system("cls");
@@ -84,21 +79,24 @@ bool processInput(std::string input){
         displayArray(array);
 
         std::cout << "When two tiles with the same number touch, they merge and double in number!\n";
-        std::cout << "Enter any input to continue.\n";
+        std::cout << "Enter any input to continue.";
         getch();
 
         system("cls");
 
         array[0][1] = 4;
         array[0][2] = 4;
+        array[1][1] = 2;
         array[3][1] = 0;
 
         displayArray(array);
 
         std::cout << "Get a tile to 2048 to win!\n";
 
-        std::cout << "Enter any input to return to main menu.\n";
+        std::cout << "Enter any input to return to main menu.";
         getch();
+
+        system("cls");
     }
 
     //  else if user wishes to quit game
@@ -109,8 +107,10 @@ bool processInput(std::string input){
     }
 
     //  else user input is invalid
-    else
+    else{
+        system("cls");
         std::cout << "Invalid Input\n";
+    }
 
     return true;
 }
@@ -130,20 +130,24 @@ void playGame(){
     array[rand() % 4][rand() % 4] = 2;
     array[rand() % 4][rand() % 4] = 2; 
 
+    system("cls");
+    std::cout << "Use arrow keys to move the tiles!\n";
+
    while(true){
         //  clear consle and print array
-        system("cls");
         displayArray(array);
         std::cout << "Score = " << score << std::endl;
 
+        //  prompt user for arrow key input
         std::cout << "Waiting for move. (q - Exit game) \n";
         input = getch();
 
-        //  if input is valid, move array
+        //  if input is valid, move array in direction of input
         if(moveArray(array, input, score)){
             system("cls");
             displayArray(array);
 
+            //  if 2048 tile is found, ask user if they wish to quit or continue game
             if(!win and getScore(array)){
                 std::cout << "Congradulations, you win!\n";
                 std::cout << "Quit game? (q)\nPress any input to continue game.\n";
@@ -160,6 +164,7 @@ void playGame(){
                 randX = rand() % 4;
                 randY = rand() % 4;
 
+                //  find empty tile
                 while(array[randX][randY] != 0){
                     randX = rand() % 4;
                     randY = rand() % 4;
@@ -190,6 +195,8 @@ void playGame(){
             if(input == QUIT)  
                 break;
         }
+        system("cls");
+
     } 
 }
 
