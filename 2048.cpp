@@ -4,6 +4,7 @@
 #include <conio.h>
 #include <iomanip>
 #include <cstring>
+#include <cctype>
 
 #define KEY_UP 72
 #define KEY_DOWN 80
@@ -22,52 +23,106 @@ bool getScore(int[4][4]);
 int main(){
     std::string input;
 
-    std::cout << "|\033[0;43m              \033[0m|\n";
-    std::cout << "|\033[0;43m              \033[0m|\n";
-    std::cout << "|\033[0;43;33m  2  0  4  8  \033[0m|\n";
-    std::cout << "|\033[0;43m              \033[0m|\n";
-    std::cout << "|\033[0;43m              \033[0m|\n";
+    system("cls");
 
+    //  print title screen until user quits or starts game
     do{
-        std::cout << "1     -   Start Game\n";
-        std::cout << "2     -   How to Play\n";
-        std::cout << "3/q   -   Quit\n";
+        std::cout << "|\033[0;43m              \033[0m|\n";
+        std::cout << "|\033[0;43m              \033[0m|\n";
+        std::cout << "|\033[0;43;33m  2  0  4  8  \033[0m|\n";
+        std::cout << "|\033[0;43m              \033[0m|\n";
+        std::cout << "|\033[0;43m              \033[0m|\n";
 
+        std::cout << "(S)tart Game\n";
+        std::cout << "(H)ow to Play\n";
+        std::cout << "(Q)uit\n";
+
+        std::cout << "Enter input: ";
         std::cin >> input;
-    }while(processInput(input));
 
-    if(input == "1"){
-        playGame();
-        std::cout << "Thank you for playing, Goodbye\n";
-    }
-    else    
-        std::cout << "Exiting game, Goodbye\n";
+        std::cout << input << std::endl;
+
+    }while(processInput(input));
 
     return 0;
 }
 
 bool processInput(std::string input){
-    if(input == "1")
+    //  if user wishes to start game a game
+    if(input == "S" or input == "s"){
+        playGame();
+        std::cout << "Thank you for playing, Goodbye\n";
+
         return false;
-    else if(input == "2"){
-        std::cout << "How to Play\n";
     }
-    else if(input == "3" or input == "q")
+    
+    //  else if user wishes to learn how to play
+    else if(input == "H" or input == "h"){
+        system("cls");
+        std::cout << "How to Play\n";
+
+        int array[4][4] = {0};
+        array[1][1] = 2;
+        array [2][2] = 4;
+
+        displayArray(array);
+
+        std::cout << "Use the arrow keys to move the tiles in the direction of the arrow.\n";
+
+        std::cout << "Enter any input to continue.\n";
+        getch();
+
+        system("cls");
+
+        array[1][1] = 0;
+        array [2][2] = 0;
+
+        array[0][1] = 2;
+        array[0][2] = 4;
+        array[3][1] = 2;
+
+        displayArray(array);
+
+        std::cout << "When two tiles with the same number touch, they merge and double in number!\n";
+        std::cout << "Enter any input to continue.\n";
+        getch();
+
+        system("cls");
+
+        array[0][1] = 4;
+        array[0][2] = 4;
+        array[3][1] = 0;
+
+        displayArray(array);
+
+        std::cout << "Get a tile to 2048 to win!\n";
+
+        std::cout << "Enter any input to return to main menu.\n";
+        getch();
+    }
+
+    //  else if user wishes to quit game
+    else if(input == "Q" or input == "q"){
+        std::cout << "Thank you for playing, Goodbye\n";
+
         return false;
+    }
+
+    //  else user input is invalid
     else
         std::cout << "Invalid Input\n";
-    
+
     return true;
 }
 
 void playGame(){
     //  initialize starting array
     int array[4][4] = {0};
-    int randX = 0;
+    int randX = 0;      
     int randY = 0;
     int input = 0;
     int score = 0;
-    bool win = false;
+    bool win = false;           //  flag for if user has won
     
     srand(time(NULL));
 
@@ -373,6 +428,8 @@ void displayArray(int array[4][4]){
                 case 512:   std::cout << "\033[0;103;31m"; break; // high yellow background red text
                 case 1024:  std::cout << "\033[0;106;33m"; break; // high cyan background yellow text
                 case 2048:  std::cout << "\033[0;41;33m"; break; // red background yellow text
+                case 4096:  std::cout << "\033[0;41;30m"; break; // black background yellow text
+
                 // Add more cases if needed
                 default:    std::cout << "\033[0m";  break; // Reset
             }
@@ -385,8 +442,6 @@ void displayArray(int array[4][4]){
 }
 
 bool getScore(int array[4][4]){
-    int sum = 0;
-
     for(int i = 0; i < 4; i++){
         for(int j = 0; j < 4; j++){
             if(array[i][j] == 2048)
